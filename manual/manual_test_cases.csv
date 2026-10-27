@@ -1,0 +1,110 @@
+﻿Test Case ID,Acceptance Criteria ID,Title,Priority,Preconditions,Test Data,Steps,Expected Result,Actual Result,Status,Test Design Technique,Automation Mapping
+TC-001,AC01,Add one HTC smartphone to empty cart,High,"Fresh browser context, guest (logged out), empty cart, currency USD.",HTC x1,"1. Open the HTC smartphone product detail page
+2. Note the displayed unit price
+3. Set Qty to 1
+4. Click Add to cart
+5. Open Shopping cart","Cart has exactly 1 row
+Name = HTC smartphone
+Unit price = price noted in step 2 ($245.00)
+Qty = 1
+Line total = $245.00
+Subtotal = $245.00",To be filled after execution,Not Run,Use case / scenario testing,AUTO-01 (tests/cart.spec.ts TC-001)
+TC-002,AC01,Add one Leica camera to empty cart,Medium,"Fresh browser context, guest (logged out), empty cart, currency USD.",Leica x1,"1. Open the Leica T Mirrorless Digital Camera detail page
+2. Note the displayed unit price
+3. Set Qty to 1
+4. Click Add to cart
+5. Open Shopping cart","1 row, name = Leica T Mirrorless Digital Camera, unit price = noted price ($530.00), Qty 1, line total $530.00, subtotal $530.00",To be filled after execution,Not Run,"Equivalence partitioning (second product, same partition)",
+TC-003,AC01,Add one unit with Qty explicitly typed as 1 vs untouched default,Low,"Fresh browser context, guest (logged out), empty cart, currency USD.",HTC x1,"1. Open HTC detail page
+2. Clear Qty and type 1
+3. Click Add to cart
+4. Open Shopping cart","Same result as TC-001: single row, Qty 1, line total $245.00",To be filled after execution,Not Run,Equivalence partitioning,
+TC-004,AC02,Add a second distinct product - two separate rows,High,"Fresh browser context, guest (logged out), empty cart, currency USD.",HTC x1 then Leica x1,"1. Add HTC x1 from its detail page
+2. Add Leica x1 from its detail page
+3. Open Shopping cart","2 rows (HTC, Leica)
+HTC Qty still 1, line total $245.00
+Leica Qty 1, line total $530.00
+Subtotal = $775.00",To be filled after execution,Not Run,Use case / scenario testing,AUTO-02 (TC-004)
+TC-005,AC02,Add products in reverse order (Leica then HTC),Medium,"Fresh browser context, guest (logged out), empty cart, currency USD.",Leica x1 then HTC x1,"1. Add Leica x1
+2. Add HTC x1
+3. Open Shopping cart","2 rows, each Qty 1, subtotal $775.00 (result independent of add order)",To be filled after execution,Not Run,Pairwise / order variation,
+TC-006,AC03,Add same product again (1 + 1),High,"Fresh browser context, guest (logged out), empty cart, currency USD.","HTC x1, HTC x1","1. Add HTC with Qty 1
+2. Return to HTC detail page, set Qty 1, Add to cart
+3. Open Shopping cart","1 HTC row only (no duplicate), Qty 2, line total $490.00, subtotal $490.00",To be filled after execution,Not Run,State transition (cart state 1 -> 2),
+TC-007,AC03,Add same product again with a different quantity (1 + 2),High,"Fresh browser context, guest (logged out), empty cart, currency USD.","HTC x1, then HTC x2","1. Add HTC with Qty 1
+2. Return to HTC detail page, set Qty 2, Add to cart
+3. Open Shopping cart","1 HTC row, Qty 3 (existing qty + added qty), line total $735.00, subtotal $735.00",To be filled after execution,Not Run,State transition + calculation check,AUTO-03 (TC-007)
+TC-008,AC03,Re-add first product after a second product exists,Medium,"Fresh browser context, guest (logged out), empty cart, currency USD.","HTC x1, Leica x1, HTC x1","1. Add HTC x1
+2. Add Leica x1
+3. Add HTC x1 again
+4. Open Shopping cart","2 rows only: HTC Qty 2 ($490.00), Leica Qty 1 ($530.00)
+Subtotal = $1,020.00",To be filled after execution,Not Run,Decision table (same product? yes/no) / interaction,
+TC-009,AC04,Update single-row quantity 1 to 3,High,"Fresh browser context, guest (logged out), empty cart, currency USD.",HTC x1 -> 3,"1. Add HTC x1
+2. Open Shopping cart
+3. Change Qty to 3
+4. Click Update shopping cart","Qty shows 3, line total $735.00, subtotal $735.00",To be filled after execution,Not Run,Boundary value analysis (1 -> 3),
+TC-010,AC04,"Update quantity with two products, other row unchanged",High,"Fresh browser context, guest (logged out), empty cart, currency USD.","HTC x1 -> 3, Leica x1","1. Add HTC x1 and Leica x1
+2. Open Shopping cart
+3. Change HTC Qty to 3
+4. Click Update shopping cart","HTC Qty 3, line total $735.00
+Leica Qty 1, line total $530.00 (unchanged)
+Subtotal = $1,265.00",To be filled after execution,Not Run,State transition / interaction,AUTO-04 (TC-010)
+TC-011,AC04,Edited quantity is NOT saved without clicking Update,Medium,"Fresh browser context, guest (logged out), empty cart, currency USD.","HTC x1, typed Qty 3","1. Add HTC x1
+2. Open Shopping cart
+3. Change Qty to 3 but do not click Update
+4. Click Continue shopping
+5. Reopen Shopping cart","HTC Qty is still 1, line total $245.00, subtotal $245.00",To be filled after execution,Not Run,Negative / state transition,
+TC-012,AC04,Update quantity of one row after a prior update,Medium,"Fresh browser context, guest (logged out), empty cart, currency USD.",HTC x1 -> 3 -> 2,"1. Add HTC x1
+2. Open cart, set Qty 3, Update
+3. Set Qty 2, Update","Qty 2, line total $490.00, subtotal $490.00 (decrease works as well)",To be filled after execution,Not Run,State transition,
+TC-013,Exploratory,Cart quantity set to 0,Medium,"Fresh browser context, guest (logged out), empty cart, currency USD.",HTC x1 -> 0,"1. Add HTC x1
+2. Open cart, set Qty 0
+3. Click Update shopping cart
+Observe and record behavior",Observe: expected (common nopCommerce behavior) row is removed and cart shows empty message. Record actual.,To be filled after execution,Not Run,Boundary value analysis (lower bound 0) / error guessing,
+TC-014,AC05,Remove one of two products,High,"Fresh browser context, guest (logged out), empty cart, currency USD.","HTC x1, Leica x1","1. Add HTC x1 and Leica x1
+2. Open Shopping cart
+3. Remove HTC","HTC row gone; only Leica row remains, Qty 1, line total $530.00
+Subtotal = $530.00",To be filled after execution,Not Run,Use case / scenario testing,AUTO-05 (TC-014)
+TC-015,AC05,Remove the other product (Leica) of two,Medium,"Fresh browser context, guest (logged out), empty cart, currency USD.","HTC x1, Leica x1","1. Add HTC x1 and Leica x1
+2. Open Shopping cart
+3. Remove Leica","Leica row gone; HTC row remains Qty 1, subtotal $245.00",To be filled after execution,Not Run,Equivalence partitioning (which row removed),
+TC-016,AC05,Remove a product after quantities were changed,Medium,"Fresh browser context, guest (logged out), empty cart, currency USD.","HTC x1 -> 3, Leica x1","1. Add HTC x1 and Leica x1
+2. Open cart, set HTC Qty 3, Update
+3. Remove Leica","HTC row remains with Qty 3 (unchanged), line total $735.00, subtotal $735.00",To be filled after execution,Not Run,State transition / interaction (update then remove),
+TC-017,AC06,Continue shopping then reopen cart keeps items,High,"Fresh browser context, guest (logged out), empty cart, currency USD.","HTC x2, Leica x1","1. Add HTC x2 and Leica x1
+2. Open Shopping cart
+3. Click Continue shopping
+4. Open Shopping cart from the header link","Cart still has HTC Qty 2 and Leica Qty 1
+Subtotal = $1,020.00",To be filled after execution,Not Run,State transition (saved state),AUTO-06 (TC-017)
+TC-018,AC06,Updated quantity persists after Continue shopping,Medium,"Fresh browser context, guest (logged out), empty cart, currency USD.",HTC x1 -> 3,"1. Add HTC x1
+2. Open cart, set Qty 3, Update
+3. Click Continue shopping
+4. Reopen cart from header","HTC Qty 3, line total $735.00, subtotal $735.00",To be filled after execution,Not Run,State transition / interaction,
+TC-019,AC06,Cart is preserved after browser refresh,High,"Fresh browser context, guest (logged out), empty cart, currency USD.","HTC x1, Leica x2","1. Add HTC x1 and Leica x2
+2. Open Shopping cart
+3. Refresh the page (F5)","Rows, quantities and subtotal unchanged: HTC 1 ($245.00), Leica 2 ($1,060.00), subtotal $1,305.00",To be filled after execution,Not Run,State transition (saved state),AUTO-07 (TC-019)
+TC-020,Exploratory,Cart is not shared with a new browser context,Low,"Fresh browser context, guest (logged out), empty cart, currency USD.",HTC x1,"1. In context A add HTC x1
+2. Open a new incognito/clean context B
+3. Open Shopping cart",Context B cart is empty (cart is session based),To be filled after execution,Not Run,Error guessing,
+TC-021,No AC (in-scope invalid discount),Invalid discount code is rejected,High,"Fresh browser context, guest (logged out), empty cart, currency USD.","HTC x1, code QCINVALID2026","1. Add HTC x1
+2. Open Shopping cart
+3. Enter QCINVALID2026 in Discount code
+4. Click Apply coupon","Error message about the coupon code is shown
+No discount line is added
+HTC row unchanged, subtotal $245.00",To be filled after execution,Not Run,Equivalence partitioning (invalid code partition),AUTO-08 (TC-021)
+TC-022,Exploratory,Apply empty discount code,Low,"Fresh browser context, guest (logged out), empty cart, currency USD.","HTC x1, empty code","1. Add HTC x1
+2. Open cart
+3. Leave Discount code empty and click Apply coupon
+Observe","Observe: no discount applied, cart unchanged; record any message shown",To be filled after execution,Not Run,Equivalence partitioning (empty input) / error guessing,
+TC-023,Exploratory,Add to cart with quantity 0 on product page,Medium,"Fresh browser context, guest (logged out), empty cart, currency USD.",HTC Qty 0,"1. Open HTC detail page
+2. Set Qty 0
+3. Click Add to cart
+Observe",Observe: item should not be added with qty 0 (error/notification or qty treated as invalid). Record actual and cart state.,To be filled after execution,Not Run,Boundary value analysis (0) / negative,
+TC-024,Exploratory,"Add to cart with invalid quantity (-1, abc, 1.5)",Medium,"Fresh browser context, guest (logged out), empty cart, currency USD.",HTC Qty -1; abc; 1.5,"1. Open HTC detail page
+2. Enter Qty -1, click Add to cart; record result
+3. Repeat with abc
+4. Repeat with 1.5
+5. Open cart",Observe: invalid quantities are rejected or sanitised; cart never contains a negative or fractional quantity,To be filled after execution,Not Run,Equivalence partitioning (invalid partitions) / error guessing,
+TC-025,Exploratory,Large quantity formatting (thousands separator),Low,"Fresh browser context, guest (logged out), empty cart, currency USD.",Leica x10,"1. Add Leica with Qty 10
+2. Open cart","Line total and subtotal show $5,300.00 (formatted correctly)",To be filled after execution,Not Run,Boundary value analysis / calculation check,
+TC-026,Exploratory,Maximum quantity limit in cart,Low,"Fresh browser context, guest (logged out), empty cart, currency USD.",HTC Qty 10000 and 10001,"1. Add HTC with Qty 10000, open cart, record
+2. Try Qty 10001 in cart, Update, record",Observe and record the limit and message (limit not defined in the story - see clarification Q3),To be filled after execution,Not Run,Boundary value analysis (upper bound),

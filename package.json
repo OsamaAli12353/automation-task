@@ -1,0 +1,18 @@
+{
+  "name": "nopcommerce-guest-cart-tests",
+  "version": "1.0.0",
+  "description": "US 001 Manage a guest shopping cart - Playwright + TypeScript automation",
+  "private": true,
+  "scripts": {
+    "install:browsers": "playwright install chromium",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
